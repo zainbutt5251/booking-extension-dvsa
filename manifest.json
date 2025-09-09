@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "4T",
+  "version": "1.1.6",
+  "description": "Chrome extension for DVSA booking assistance",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/images.png",
+      "32": "images/images.png",
+      "48": "images/images.png",
+      "128": "images/images.png"
+    }
+  },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "alarms",
+    "tabs",
+    "cookies",
+    "webRequest"
+  ],
+  "background": {
+    "service_worker": "background/main.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://driver-services.dvsa.gov.uk/*",
+        "https://www.access.service.gov.uk/*",
+        "http://localhost:3000/*"
+      ],
+      "js": ["content/main.js"],
+      "type": "module"
+    }
+  ],
+  "host_permissions": [
+    "https://*.gov.uk/*",
+    "http://*.gov.uk/*",
+    "http://localhost:3000/*"
+  ],
+  "icons": {
+    "16": "images/images.png",
+    "32": "images/images.png",
+    "48": "images/images.png",
+    "128": "images/images.png"
+  }
+}

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DVSA Booking Extension</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Status Message -->
+      <div id="statusMessage" class="status-message"></div>
+
+      <!-- Main Tab Navigation -->
+      <div class="tab-navigation">
+        <button class="tab-btn active" data-tab="main">Main</button>
+        <button class="tab-btn" data-tab="groups">Center Groups</button>
+        <button class="tab-btn" data-tab="centers">Test Centers</button>
+        <button class="tab-btn" data-tab="users">User Management</button>
+       </div>
+
+      <!-- Main Tab Content -->
+      <div id="main-tab" class="tab-content active animate-fade-in">
+        <!-- Automation Section -->
+        <div class="fancy-card">
+          <div class="card-body">
+            <div class="card-header">
+              <h2 class="card-title">Automation</h2>
+              <span id="runningTime" class="running-time"></span>
+              <span id="automationStatus" class="status-badge status-stopped"
+                >Stopped</span
+              >
+            </div>
+            <form id="automationForm" class="form automation-compact">
+              <div class="automation-grid">
+                <div class="form-group">
+                  <label for="selectedUser" class="form-label">
+                    Select User
+                  </label>
+                  <select id="selectedUser" class="form-select" required>
+                    <option value="">Select a user</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="timeDelay" class="form-label">
+                    Time Delay (ms)
+                  </label>
+                  <input
+                    type="number"
+                    id="timeDelay"
+                    class="form-input"
+                    min="0"
+                    value="500"
+                    placeholder="Delay between actions"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="startDate" class="form-label"> Start Date </label>
+                  <input
+                    type="date"
+                    id="startDate"
+                    class="form-input"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="endDate" class="form-label"> End Date </label>
+                  <input type="date" id="endDate" class="form-input" required />
+                </div>
+
+                <div class="form-group checkbox-group">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="enableRapidMode" checked />
+                    <span>Auto Enable Rapid Mode</span>
+                    <span
+                      class="tooltip-icon"
+                      title="When enabled, the system will automatically switch to a faster search speed when 2 or more slots are found."
+                      >ⓘ</span
+                    >
+                  </label>
+                </div>
+              </div>
+
+              <div class="button-container">
+                <div class="button-wrapper">
+                  <button
+                    type="submit"
+                    id="startButton"
+                    class="btn btn-primary"
+                  >
+                    Start
+                  </button>
+                </div>
+                <div class="button-wrapper">
+                  <button
+                    type="button"
+                    id="stopButton"
+                    class="btn btn-danger"
+                    disabled
+                  >
+                    Stop
+                  </button>
+                </div>
+                <!-- <div class="button-wrapper">
+                  <button
+                    type="button"
+                    id="resetCookiesButton"
+                    class="btn btn-secondary"
+                  >
+                    Reset Cookies
+                  </button>
+                </div> -->
+              </div>
+            </form>
+
+            <div class="loading-container hidden" id="loadingAutomation">
+              <div class="loading-spinner"></div>
+              <p class="loading-text">Starting automation...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selected Centers Section -->
+        <div class="fancy-card">
+          <div class="card-body">
+            <div class="center-header">
+              <h3 class="section-title">
+                Selected Centers
+                <span class="count-container">
+                  <span id="selectedCentersCount" class="count-value">0</span>/5
+                </span>
+              </h3>
+            </div>
+
+            <div class="selected-centers">
+              <div id="selectedCentersList" class="selected-centers-list">
+                <div class="empty-message">No centers selected</div>
+              </div>
+
+              <div id="saveGroupContainer" class="save-group-container hidden">
+                <div class="group-save-form">
+                  <input
+                    type="text"
+                    id="groupName"
+                    placeholder="Save centers as group..."
+                    class="form-input"
+                  />
+                  <button
+                    type="button"
+                    id="saveGroupBtn"
+                    class="btn btn-primary btn-sm"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Groups Tab Content -->
+      <div id="groups-tab" class="tab-content animate-fade-in">
+        <div class="fancy-card no-bg">
+          <div class="card-body">
+            <h3 class="section-title">Saved Center Groups</h3>
+            <div id="noCenterGroupsMessage" class="empty-message">
+              No saved center groups
+            </div>
+            <div id="centerGroupsContainer" class="center-groups-container">
+              <!-- Groups will be dynamically added here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test Centers Tab Content -->
+      <div id="centers-tab" class="tab-content animate-fade-in">
+        <!-- Test Centers Section -->
+        <div class="fancy-card">
+          <div class="card-body">
+            <div class="center-header">
+              <div class="search-container">
+                <input
+                  type="text"
+                  id="centerSearch"
+                  placeholder="Search centers..."
+                  class="search-input"
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="search-icon"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <!-- Save as Group button will be added here dynamically -->
+            </div>
+
+            <div id="loadingCenters" class="loading-container">
+              <div class="loading-spinner"></div>
+              <p class="loading-text">Loading test centers...</p>
+            </div>
+
+            <div id="centerList" class="center-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Management Tab Content -->
+      <div id="users-tab" class="tab-content animate-fade-in">
+        <!-- User List Section -->
+        <div class="fancy-card">
+          <div class="card-body compact">
+            <h3 class="section-title">Saved Users</h3>
+            <div id="noUsersMessage" class="empty-message">No saved users</div>
+            <div id="userList" class="user-list"></div>
+          </div>
+        </div>
+
+        <!-- Add User Section -->
+        <div class="fancy-card">
+          <div class="card-body compact">
+            <h3 class="section-title">Add New User</h3>
+            <form id="userForm" class="form compact-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="friendlyName" class="form-label"> Name </label>
+                  <input
+                    type="text"
+                    id="friendlyName"
+                    placeholder="e.g. John's Account"
+                    class="form-input"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="userId" class="form-label"> User ID </label>
+                  <input
+                    type="text"
+                    id="userId"
+                    placeholder="DVSA User ID"
+                    class="form-input"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="password" class="form-label"> Password </label>
+                  <input
+                    type="password"
+                    id="password"
+                    placeholder="DVSA Password"
+                    class="form-input"
+                    required
+                  />
+                </div>
+                <div class="form-group button-group">
+                  <button
+                    type="submit"
+                    id="saveUserBtn"
+                    class="btn btn-primary"
+                  >
+                    Save User
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+ 
+    </div>
+
+    <script src="popup.js" type="module"></script>
+  </body>
+</html>
