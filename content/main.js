@@ -848,7 +848,7 @@ async function Jd(d) {
 
 `;
                         });
-            (P += `User: ${d?.trim()?.split(" ")[0]}`), await Y(P, "tests");
+            (P += `User: ${d?.userName?.trim()?.split(" ")[0]}`), await Y(P, "tests");
         }
         if (d.enableRapidMode && H > W && V < 10 && Q.testsAvailable >= 2) {
             let X =
@@ -870,7 +870,7 @@ SEARCH
 ${H}ms
 
 `;
-            (M += `${d?.trim()?.split(" ")[0]}`), await Y(M, "search");
+            (M += `${d.userName?.trim()?.split(" ")[0]}`), await Y(M, "search");
         }
         if (((V = R.length), k)) (G = !0), await Zd(k.href);
     }
@@ -1059,7 +1059,7 @@ async function Xd() {
 ` +
                     `Imperva security block detected (Error 15)
 
-User: ${G?.trim()?.split(" ")[0]}`,
+User: ${G}`,
                     "tests"
                 ),
                 chrome.runtime.sendMessage({ action: "stopAutomation" }),

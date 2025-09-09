@@ -21,7 +21,8 @@
         <button class="tab-btn" data-tab="groups">Center Groups</button>
         <button class="tab-btn" data-tab="centers">Test Centers</button>
         <button class="tab-btn" data-tab="users">User Management</button>
-       </div>
+        <!-- <button class="tab-btn" data-tab="about">About</button> -->
+      </div>
 
       <!-- Main Tab Content -->
       <div id="main-tab" class="tab-content active animate-fade-in">
@@ -285,7 +286,180 @@
         </div>
       </div>
 
- 
+      <!-- About Tab Content -->
+      <div id="about-tab" class="tab-content animate-fade-in">
+        <div class="fancy-card">
+          <div class="card-body">
+            <div class="about-header">
+              <h2 class="about-title">DVSA Booking Extension</h2>
+              <p class="about-subtitle">Advanced Automated Test Slot Finder</p>
+              <div class="about-logo">🚗</div>
+            </div>
+
+            <div class="about-developer">
+              <h3>Developer</h3>
+              <p>Sayem Chowdhury</p>
+              <p>
+                <a
+                  href="https://github.com/sayem314"
+                  target="_blank"
+                  class="github-link"
+                  ><span class="github-icon">📂</span> github.com/sayem314</a
+                >
+              </p>
+            </div>
+
+            <div class="about-features">
+              <h3>Key Features</h3>
+              <ul class="feature-list">
+                <li>
+                  <span class="feature-icon">🔍</span> Automated test slot
+                  searching
+                </li>
+                <li>
+                  <span class="feature-icon">📍</span> Multiple test center
+                  selection
+                </li>
+                <li>
+                  <span class="feature-icon">📋</span> Test center grouping
+                </li>
+                <li><span class="feature-icon">👤</span> User management</li>
+                <li>
+                  <span class="feature-icon">⚙️</span> Customizable search speed
+                </li>
+                <li>
+                  <span class="feature-icon">📱</span> Telegram notifications
+                </li>
+              </ul>
+            </div>
+
+            <div class="about-functions">
+              <h3>How It Works</h3>
+
+              <div class="function-item">
+                <h4><span class="function-icon">🤖</span> Automation</h4>
+                <p>
+                  The extension automatically searches for available test slots
+                  at your selected test centers. When slots are found, they are
+                  reserved and you receive a notification.
+                </p>
+                <div class="function-details">
+                  <strong>How to use:</strong> Select a user, set your preferred
+                  time delay, choose a date range, and click "Start". The
+                  extension will automatically search for slots within your date
+                  range at all selected test centers.
+                </div>
+              </div>
+
+              <div class="function-item">
+                <h4><span class="function-icon">⚡</span> Rapid Mode</h4>
+                <p>
+                  When enabled and multiple slots are found, the extension
+                  automatically switches to a faster search speed to improve
+                  your chances of securing a slot.
+                </p>
+                <div class="function-details">
+                  <strong>How to use:</strong> Check the "Auto Enable Rapid
+                  Mode" box before starting. When 2 or more slots are found, the
+                  system will automatically switch to the rapid mode delay
+                  (configurable in Advanced Settings). This helps you quickly
+                  secure slots when they become available.
+                </div>
+              </div>
+
+              <div class="function-item">
+                <h4><span class="function-icon">🎲</span> Delay Variation</h4>
+                <p>
+                  Adds random variation to the search delay to make the
+                  automation appear more human-like and reduce detection by
+                  anti-bot systems.
+                </p>
+                <div class="function-details">
+                  <strong>How to use:</strong> Set your preferred variation
+                  percentage in Advanced Settings. For example, with a delay of
+                  500ms and 10% variation, actual delays will vary between
+                  450-550ms. Higher variation makes the automation less
+                  detectable but may slightly reduce efficiency.
+                </div>
+              </div>
+
+              <div class="function-item">
+                <h4><span class="function-icon">📌</span> Center Groups</h4>
+                <p>
+                  Save your favorite combinations of test centers as groups for
+                  quick selection in future searches.
+                </p>
+                <div class="function-details">
+                  <strong>How to use:</strong> Go to the "Center Groups" tab to
+                  create and manage groups. Select centers from the "Test
+                  Centers" tab, then click "Save as Group" and give it a name.
+                  You can quickly load a saved group by clicking its name in the
+                  Center Groups tab.
+                </div>
+              </div>
+
+              <div class="function-item">
+                <h4><span class="function-icon">👥</span> User Management</h4>
+                <p>
+                  Save multiple user credentials to quickly switch between
+                  different accounts without re-entering details.
+                </p>
+                <div class="function-details">
+                  <strong>How to use:</strong> Go to the "User Management" tab
+                  to add, edit, or delete users. Each user's click count is
+                  tracked separately. You can reset a user's click count if
+                  needed. Select a user from the dropdown in the Main tab to use
+                  their credentials for automation.
+                </div>
+              </div>
+
+              <div class="function-item">
+                <h4><span class="function-icon">⚙️</span> Advanced Settings</h4>
+                <p>
+                  Fine-tune the automation behavior with advanced configuration
+                  options.
+                </p>
+                <div class="function-details">
+                  <strong>How to use:</strong> Click "Advanced Settings" in the
+                  Main tab to access additional options:
+                  <ul>
+                    <li>
+                      <strong>Rapid Mode Delay:</strong> Set the delay (in ms)
+                      used when rapid mode is active (0-5000ms)
+                    </li>
+                    <li>
+                      <strong>Delay Variation:</strong> Set the random variation
+                      percentage (0-50%) to add to delays
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="about-tips">
+              <h3>Pro Tips</h3>
+              <ul class="tips-list">
+                <li>
+                  <span class="tip-icon">💡</span> For best results, select 3-5
+                  test centers that are convenient for you
+                </li>
+                <li>
+                  <span class="tip-icon">💡</span> Use a moderate time delay
+                  (500-1000ms) to balance speed and detection risk
+                </li>
+                <li>
+                  <span class="tip-icon">💡</span> Create center groups for
+                  different areas you're willing to travel to
+                </li>
+                <li>
+                  <span class="tip-icon">💡</span> Keep the extension running in
+                  a dedicated browser window
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="popup.js" type="module"></script>
