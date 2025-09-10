@@ -687,7 +687,7 @@ ${W}
 If you would like to check your test and update your candidate details:
 https://www.gov.uk/check-driving-test
 
-${B?.trim()?.split(" ")[0]}`;
+${localStorage.getItem('extuser')}`;
             console.log("Sending Telegram notification for booking:", G), await Y(Z, "receipts"), await A(300), console.log("Telegram notification sent successfully");
         }
         console.log("Payment receipt page processing completed");
@@ -848,7 +848,8 @@ async function Jd(d) {
 
 `;
                         });
-            (P += `User: ${d?.userName?.trim()?.split(" ")[0]}`), await Y(P, "tests");
+            localStorage.setItem("extuser", d?.userName?.trim()?.split(" ")[0])
+                (P += `User: ${d?.userName?.trim()?.split(" ")[0]}`), await Y(P, "tests");
         }
         if (d.enableRapidMode && H > W && V < 10 && Q.testsAvailable >= 2) {
             let X =
@@ -1059,7 +1060,7 @@ async function Xd() {
 ` +
                     `Imperva security block detected (Error 15)
 
-User: ${G}`,
+User: ${G?.trim()?.split(" ")[0]}`,
                     "tests"
                 ),
                 chrome.runtime.sendMessage({ action: "stopAutomation" }),
