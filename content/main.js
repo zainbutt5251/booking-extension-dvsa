@@ -848,9 +848,10 @@ async function Jd(d) {
 
 `;
                         });
-            localStorage.setItem("extuser", d?.userName?.trim()?.split(" ")[0])
-                (P += `User: ${d?.userName?.trim()?.split(" ")[0]}`), await Y(P, "tests");
+
+            (P += `User: ${d?.userName?.trim()?.split(" ")[0]}`), await Y(P, "tests");
         }
+          localStorage.setItem("extuser", d?.userName?.trim()?.split(" ")[0])
         if (d.enableRapidMode && H > W && V < 10 && Q.testsAvailable >= 2) {
             let X =
                 `RAPID MODE ACTIVATED!
