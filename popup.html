@@ -4,60 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DVSA Booking Extension</title>
+    <link rel="stylesheet" href="styles.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css">
-    <link rel="stylesheet" href="./mdb.min.css">
-    
   </head>
   <body>
-    <!-- Login Screen -->
-    <div id="loginScreen" class="login-container">
-      <h2 class="login-title"></h2>
-      <form id="loginForm" class="login-form">
-        <div class="form-group">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" id="email" class="form-input" placeholder="Enter your email" required />
-        </div>
-        <div class="form-group">
-          <label for="password" class="form-label">Password</label>
-          <input type="password" id="password" class="form-input" placeholder="Enter your password" required />
-        </div>
-        <button type="submit" id="loginBtn" class="login-btn">Login</button>
-      </form>
-      <div id="loginMessage" style="margin-top: 1rem; text-align: center;"></div>
-    </div>
-
-    <!-- Main Application (hidden by default) -->
-    <div id="mainApp" class="container-fluid hidden">
+    <div class="container">
       <!-- Status Message -->
-      <div class="user-session-header">
-        <span id="userEmailDisplay">Not logged in</span>
-        <button id="logout-btn" class="btn btn-secondary btn-sm">Logout</button>
-      </div>
       <div id="statusMessage" class="status-message"></div>
 
       <!-- Main Tab Navigation -->
-     <ul class="nav nav-tabs mb-4" id="tabs-nav" role="tablist">
-  <li class="nav-item" role="presentation">
-    <a class="nav-link active" id="main-tab-link" data-mdb-toggle="tab" href="#main-tab" role="tab"
-      aria-controls="main-tab" aria-selected="true">Main</a>
-  </li>
-  <li class="nav-item" role="presentation">
-    <a class="nav-link" id="groups-tab-link" data-mdb-toggle="tab" href="#groups-tab" role="tab"
-      aria-controls="groups-tab" aria-selected="false">Center Groups</a>
-  </li>
-  <li class="nav-item" role="presentation">
-    <a class="nav-link" id="centers-tab-link" data-mdb-toggle="tab" href="#centers-tab" role="tab"
-      aria-controls="centers-tab" aria-selected="false">Test Centers</a>
-  </li>
-  <li class="nav-item" role="presentation">
-    <a class="nav-link" id="users-tab-link" data-mdb-toggle="tab" href="#users-tab" role="tab"
-      aria-controls="users-tab" aria-selected="false">User Management</a>
-  </li>
-</ul>
+      <div class="tab-navigation">
+        <button class="tab-btn active" data-tab="main">Main</button>
+        <button class="tab-btn" data-tab="groups">Center Groups</button>
+        <button class="tab-btn" data-tab="centers">Test Centers</button>
+        <button class="tab-btn" data-tab="users">User Management</button>
+       </div>
 
       <!-- Main Tab Content -->
       <div id="main-tab" class="tab-content active animate-fade-in">
@@ -67,27 +31,25 @@
             <div class="card-header">
               <h2 class="card-title">Automation</h2>
               <span id="runningTime" class="running-time"></span>
-              <span id="automationStatus" class="status-badge status-stopped">Stopped</span>
+              <span id="automationStatus" class="status-badge status-stopped"
+                >Stopped</span
+              >
             </div>
             <form id="automationForm" class="form automation-compact">
               <div class="automation-grid">
                 <div class="form-group">
-                  <label for="selectedsearch" id="selecsearchbussiness" class="form-label">Select Search Type</label>
-                  <select id="searchBusiness" class="form-select" required>
-  <option value="TC-B">Car</option>
-  <option value="TC-ADI2">ADI part two</option>
-  <option value="TC-ADI3">ADI part three</option>
-</select>
-                </div>
-                <div class="form-group">
-                  <label for="selectedUser" class="form-label">Select User</label>
+                  <label for="selectedUser" class="form-label">
+                    Select User
+                  </label>
                   <select id="selectedUser" class="form-select" required>
                     <option value="">Select a user</option>
                   </select>
                 </div>
 
                 <div class="form-group">
-                  <label for="timeDelay" class="form-label">Time Delay (ms)</label>
+                  <label for="timeDelay" class="form-label">
+                    Time Delay (ms)
+                  </label>
                   <input
                     type="number"
                     id="timeDelay"
@@ -100,10 +62,21 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="startDate" class="form-label">Start Date</label>
-                  <input type="date" id="startDate" class="form-input" required />
+                  <label for="startDate" class="form-label"> Start Date </label>
+                  <input
+                    type="date"
+                    id="startDate"
+                    class="form-input"
+                    required
+                  />
                 </div>
- <!-- <div class="form-group checkbox-group">
+
+                <div class="form-group">
+                  <label for="endDate" class="form-label"> End Date </label>
+                  <input type="date" id="endDate" class="form-input" required />
+                </div>
+
+                <div class="form-group checkbox-group">
                   <label class="checkbox-label">
                     <input type="checkbox" id="enableRapidMode" checked />
                     <span>Auto Enable Rapid Mode</span>
@@ -113,22 +86,38 @@
                       >ⓘ</span
                     >
                   </label>
-                </div> -->
-                <div class="form-group">
-                  <label for="endDate" class="form-label">End Date</label>
-                  <input type="date" id="endDate" class="form-input" required />
                 </div>
-
-               
               </div>
 
               <div class="button-container">
                 <div class="button-wrapper">
-                  <button type="submit" id="startButton" class="btn btn-primary">Start</button>
+                  <button
+                    type="submit"
+                    id="startButton"
+                    class="btn btn-primary"
+                  >
+                    Start
+                  </button>
                 </div>
                 <div class="button-wrapper">
-                  <button type="button" id="stopButton" class="btn btn-danger" disabled>Stop</button>
+                  <button
+                    type="button"
+                    id="stopButton"
+                    class="btn btn-danger"
+                    disabled
+                  >
+                    Stop
+                  </button>
                 </div>
+                <!-- <div class="button-wrapper">
+                  <button
+                    type="button"
+                    id="resetCookiesButton"
+                    class="btn btn-secondary"
+                  >
+                    Reset Cookies
+                  </button>
+                </div> -->
               </div>
             </form>
 
@@ -156,7 +145,7 @@
                 <div class="empty-message">No centers selected</div>
               </div>
 
-              <div id="saveGroupContainer" class="save-group-container hidden bg-white">
+              <div id="saveGroupContainer" class="save-group-container hidden">
                 <div class="group-save-form">
                   <input
                     type="text"
@@ -164,7 +153,13 @@
                     placeholder="Save centers as group..."
                     class="form-input"
                   />
-                  <button type="button" id="saveGroupBtn" class="btn btn-primary btn-sm">Save</button>
+                  <button
+                    type="button"
+                    id="saveGroupBtn"
+                    class="btn btn-primary btn-sm"
+                  >
+                    Save
+                  </button>
                 </div>
               </div>
             </div>
@@ -177,7 +172,9 @@
         <div class="fancy-card no-bg">
           <div class="card-body">
             <h3 class="section-title">Saved Center Groups</h3>
-            <div id="noCenterGroupsMessage" class="empty-message">No saved center groups</div>
+            <div id="noCenterGroupsMessage" class="empty-message">
+              No saved center groups
+            </div>
             <div id="centerGroupsContainer" class="center-groups-container">
               <!-- Groups will be dynamically added here -->
             </div>
@@ -211,6 +208,7 @@
                   />
                 </svg>
               </div>
+              <!-- Save as Group button will be added here dynamically -->
             </div>
 
             <div id="loadingCenters" class="loading-container">
@@ -241,7 +239,7 @@
             <form id="userForm" class="form compact-form">
               <div class="form-row">
                 <div class="form-group">
-                  <label for="friendlyName" class="form-label">Name</label>
+                  <label for="friendlyName" class="form-label"> Name </label>
                   <input
                     type="text"
                     id="friendlyName"
@@ -251,7 +249,7 @@
                   />
                 </div>
                 <div class="form-group">
-                  <label for="userId" class="form-label">User ID</label>
+                  <label for="userId" class="form-label"> User ID </label>
                   <input
                     type="text"
                     id="userId"
@@ -263,7 +261,7 @@
               </div>
               <div class="form-row">
                 <div class="form-group">
-                  <label for="password" class="form-label">Password</label>
+                  <label for="password" class="form-label"> Password </label>
                   <input
                     type="password"
                     id="password"
@@ -273,16 +271,23 @@
                   />
                 </div>
                 <div class="form-group button-group">
-                  <button type="submit" id="saveUserBtn" class="btn btn-primary">Save User</button>
+                  <button
+                    type="submit"
+                    id="saveUserBtn"
+                    class="btn btn-primary"
+                  >
+                    Save User
+                  </button>
                 </div>
               </div>
             </form>
           </div>
         </div>
       </div>
+
+ 
     </div>
-  <script src="./mdb.min.js"></script>
-  <script src="./content/auth.js"></script>
-  <script src="./popup.js" type="module"></script>
+
+    <script src="popup.js" type="module"></script>
   </body>
 </html>

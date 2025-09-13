@@ -213,12 +213,9 @@ chrome.runtime.onInstalled.addListener(() => {
 // Function to check login status and set appropriate popup
 function checkLoginStatus() {
   chrome.storage.local.get(['loggedInUser'], (result) => {
-    if (result.loggedInUser) {
+    
       // User is logged in, show dashboard
       chrome.action.setPopup({ popup: "popup.html" });
-    } else {
-      // User is not logged in, show login page
-      chrome.action.setPopup({ popup: "login.html" });
-    }
+     
   });
 }

@@ -1213,28 +1213,72 @@ function y() {
 function E1() {
     let m = document.getElementById("userForm");
     if (!m) return;
+    
     m.addEventListener("submit", async function (h) {
         h.preventDefault();
+        
         let L = document.getElementById("friendlyName"),
             d = document.getElementById("userId"),
             W = document.getElementById("password"),
             K = L.value.trim(),
             X = d.value.trim(),
             E = W.value.trim();
+
         if (!K || !X || !E) {
             T("Please fill in all fields", "error");
             return;
         }
-        let A = H.users.findIndex((Z) => Z.userId === X);
-        if (A !== -1) H.users[A] = { friendlyName: K, userId: X, password: E, clicked: H.users[A].clicked || 0 };
-        else H.users.push({ friendlyName: K, userId: X, password: E, clicked: 0 });
-        chrome.runtime.sendMessage({ action: "updateUsers", users: H.users }, (Z) => {
-            if (!Z || !Z.success) {
-                console.error("Failed to save users"), T(`Failed to save user "${K}"`, "error");
-                return;
+
+        try {
+            // Get the latest user preferences
+            H = await S();
+            
+            let A = H.users.findIndex((Z) => Z.userId === X);
+            
+            if (A !== -1) {
+                // Update existing user
+                H.users[A] = { 
+                    friendlyName: K, 
+                    userId: X, 
+                    password: E, 
+                    clicked: H.users[A].clicked || 0 
+                };
+            } else {
+                // Add new user
+                H.users.push({ 
+                    friendlyName: K, 
+                    userId: X, 
+                    password: E, 
+                    clicked: 0 
+                });
             }
-            (L.value = ""), (d.value = ""), (W.value = ""), B(), y(), T(`User "${K}" saved successfully`, "success");
-        });
+
+            // Save users to storage - updated to match your background script format
+            chrome.runtime.sendMessage({ 
+                action: "updateUsers", 
+                users: H.users 
+            }, (response) => {
+                if (!response || !response.success) {
+                    console.error("Failed to save users:", response);
+                    T(`Failed to save user "${K}"`, "error");
+                    return;
+                }
+                
+                // Clear form and update UI
+                L.value = "";
+                d.value = "";
+                W.value = "";
+                
+                // Refresh user lists
+                B();
+                y();
+                
+                T(`User "${K}" saved successfully`, "success");
+            });
+        } catch (error) {
+            console.error("Error saving user:", error);
+            T("Error saving user. Please try again.", "error");
+        }
     });
 }
 function n(m) {
