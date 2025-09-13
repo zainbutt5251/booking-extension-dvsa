@@ -4,7 +4,8 @@
   "version": "1.1.6",
   "description": "Chrome extension for DVSA booking assistance",
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "popup.html",  
+    "default_title": "DVSA Booking",
     "default_icon": {
       "16": "images/images.png",
       "32": "images/images.png",

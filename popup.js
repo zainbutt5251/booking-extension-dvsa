@@ -367,7 +367,17 @@ function D() {
     return m.setMonth(m.getMonth() + 3), m.toISOString().split("T")[0];
 }
 function r() {
-    return { userId: null, userName: null, timeDelay: 500, startDate: f(), endDate: D(), enableRapidMode: !0, rapidModeDelay: 500, delayVariation: 10 };
+    return {
+        userId: null,
+        userName: null,
+        timeDelay: 500,
+        startDate: f(),
+        endDate: D(),
+        enableRapidMode: !0,
+        rapidModeDelay: 500,
+        delayVariation: 10,
+        searchBusiness: "TC-B" // Default value
+    };
 }
 function U() {
     return { automation: { isRunning: !1, startTime: null }, formValues: r() };
@@ -469,7 +479,7 @@ async function C() {
             console.warn("Failed to preload subscription details");
             return;
         }
-       
+
         (j = await h.json()), console.log("Subscription details preloaded successfully");
     }
 }
@@ -497,6 +507,10 @@ function m1() {
                     T("Please select a user first", "warning");
                     return;
                 }
+
+                // Get the searchBusiness value
+                let searchBusiness = document.getElementById("searchBusiness").value;
+
                 if (!j)
                     try {
                         if ((await C(), !j)) {
@@ -516,7 +530,13 @@ function m1() {
                     T("This instructor is not authorized to use the automation.", "error");
                     return;
                 }
-                chrome.runtime.sendMessage({ action: "startAutomation" }), v(), (E.querySelector(".loading-text").textContent = "Starting automation...");
+
+                // Send searchBusiness with the start automation message
+                chrome.runtime.sendMessage({
+                    action: "startAutomation",
+                    searchBusiness: searchBusiness
+                }),
+                    v(), (E.querySelector(".loading-text").textContent = "Starting automation...");
             } catch (A) {
                 console.error("Error starting automation:", A.message), T("Failed to start automation. Please try again.", "error");
             } finally {
@@ -574,11 +594,15 @@ async function d1() {
             L = document.getElementById("endDate"),
             d = document.getElementById("enableRapidMode"),
             W = document.getElementById("rapidModeDelay"),
-            K = document.getElementById("delayVariation");
+            K = document.getElementById("delayVariation"),
+            X = document.getElementById("searchBusiness"); // New element
+
         if (((m.value = _.formValues.timeDelay), (h.value = _.formValues.startDate), (L.value = _.formValues.endDate), d && _.formValues.enableRapidMode !== void 0)) d.checked = _.formValues.enableRapidMode;
         else if (d) d.checked = !0;
         if (W) W.value = _.formValues.rapidModeDelay || 500;
         if (K) K.value = _.formValues.delayVariation || 10;
+        if (X) X.value = _.formValues.searchBusiness || "TC-B"; // Set the value
+
         V(), i(), y(), B(), E1(), b();
     } catch (m) {
         console.error("Error loading preferences:", m);
@@ -591,12 +615,14 @@ async function w() {
             L = document.getElementById("endDate"),
             d = document.getElementById("enableRapidMode"),
             W = document.getElementById("rapidModeDelay"),
-            K = document.getElementById("delayVariation");
-        chrome.runtime.sendMessage({ action: "updateCenters", centers: H.selectedCenters }, (X) => {
-            if (!X || !X.success) console.error("Failed to save selected centers");
+            K = document.getElementById("delayVariation"),
+            X = document.getElementById("searchBusiness"); // New element
+
+        chrome.runtime.sendMessage({ action: "updateCenters", centers: H.selectedCenters }, (E) => {
+            if (!E || !E.success) console.error("Failed to save selected centers");
         }),
-            chrome.runtime.sendMessage({ action: "updateCenterGroups", groups: H.centerGroups || [] }, (X) => {
-                if (!X || !X.success) console.error("Failed to save center groups");
+            chrome.runtime.sendMessage({ action: "updateCenterGroups", groups: H.centerGroups || [] }, (E) => {
+                if (!E || !E.success) console.error("Failed to save center groups");
             }),
             (_.formValues = {
                 ..._.formValues,
@@ -606,9 +632,10 @@ async function w() {
                 enableRapidMode: d ? d.checked : !0,
                 rapidModeDelay: W ? parseInt(W.value, 10) : 500,
                 delayVariation: K ? parseInt(K.value, 10) : 10,
+                searchBusiness: X ? X.value : "TC-B" // Save the value
             }),
-            chrome.runtime.sendMessage({ action: "updateExtensionState", state: _ }, function (X) {
-                if (!X || !X.success) console.error("Failed to update extension state");
+            chrome.runtime.sendMessage({ action: "updateExtensionState", state: _ }, function (E) {
+                if (!E || !E.success) console.error("Failed to update extension state");
                 else console.log("Preferences saved successfully");
             });
     } catch (m) {
@@ -728,7 +755,7 @@ function P() {
     let m = document.createElement("div");
     (m.className = "modal-overlay"), (m.id = "saveGroupModal");
     let h = document.createElement("div");
-    h.className = "modal-content";
+    h.className = "modal-content bg-white";
     let L = document.createElement("div");
     (L.className = "modal-header"), (L.textContent = "Save Centers as Group");
     let d = document.createElement("div");
@@ -1033,27 +1060,44 @@ function k() {
             d = document.getElementById("selectedUser"),
             W = document.getElementById("enableRapidMode"),
             K = document.getElementById("rapidModeDelay"),
-            X = document.getElementById("delayVariation");
+            X = document.getElementById("delayVariation"),
+            E = document.getElementById("searchBusiness"); // Get searchBusiness element
+
         if (!d || !d.value) return T("Please select a user", "error"), !1;
         if (!h || !h.value) return T("Please select a start date", "error"), !1;
         if (!L || !L.value) return T("Please select an end date", "error"), !1;
-        let E = m ? parseInt(m.value, 10) : 500,
-            A = h ? h.value : null,
-            Z = L ? L.value : null,
-            z = d ? d.value : null,
-            $ = W ? W.checked : !1,
-            G = K ? parseInt(K.value, 10) : 500,
-            Q = X ? parseInt(X.value, 10) : 10;
-        if (isNaN(E) || E <= 0) return T("Time delay must be a positive number", "error"), !1;
-        if (isNaN(G) || G < 0 || G > 5000) return T("Rapid mode delay must be between 0 and 5000 ms", "error"), !1;
-        if (isNaN(Q) || Q < 0 || Q > 50) return T("Delay variation must be between 0 and 50%", "error"), !1;
-        if (A && Z && new Date(A) > new Date(Z)) return T("Start date cannot be after end date", "error"), !1;
+        if (!E || !E.value) return T("Please select a test type", "error"), !1;
+
+        let A = m ? parseInt(m.value, 10) : 500,
+            Z = h ? h.value : null,
+            z = L ? L.value : null,
+            $ = d ? d.value : null,
+            G = W ? W.checked : !0,
+            Q = K ? parseInt(K.value, 10) : 500,
+            Y = X ? parseInt(X.value, 10) : 10,
+            O = E ? E.value : "TC-B"; // Get searchBusiness value
+
+        if (isNaN(A) || A <= 0) return T("Time delay must be a positive number", "error"), !1;
+        if (isNaN(Q) || Q < 0 || Q > 5000) return T("Rapid mode delay must be between 0 and 5000 ms", "error"), !1;
+        if (isNaN(Y) || Y < 0 || Y > 50) return T("Delay variation must be between 0 and 50%", "error"), !1;
+        if (Z && z && new Date(Z) > new Date(z)) return T("Start date cannot be after end date", "error"), !1;
+
         return (
-            (_.formValues = { ..._.formValues, timeDelay: E, startDate: A, endDate: Z, userId: z, enableRapidMode: $, rapidModeDelay: G, delayVariation: Q }),
+            (_.formValues = { 
+                ..._.formValues, 
+                timeDelay: A, 
+                startDate: Z, 
+                endDate: z, 
+                userId: $, 
+                enableRapidMode: G, 
+                rapidModeDelay: Q, 
+                delayVariation: Y,
+                searchBusiness: O // Save searchBusiness value
+            }),
             console.log("Saving settings to extension state:", _),
-            chrome.runtime.sendMessage({ action: "updateExtensionState", state: _ }, function (Y) {
-                if (Y && Y.success) console.log("Settings saved successfully"), T("Settings saved successfully", "success");
-                else console.error("Failed to save settings:", Y), T("Error saving settings", "error");
+            chrome.runtime.sendMessage({ action: "updateExtensionState", state: _ }, function (q) {
+                if (q && q.success) console.log("Settings saved successfully"), T("Settings saved successfully", "success");
+                else console.error("Failed to save settings:", q), T("Error saving settings", "error");
             }),
             !0
         );

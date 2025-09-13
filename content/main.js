@@ -624,6 +624,7 @@ function wd() {
 }
 async function Ld(d = 10, m = 100) {
     for (let L = 0; L < d; L++) {
+       
         if (await wd()) return !0;
         await new Promise((V) => setTimeout(V, m));
     }
@@ -631,7 +632,7 @@ async function Ld(d = 10, m = 100) {
 }
 async function Y(message, type = "tests") {
     try {
-        let response = await fetch(`https://cistudyabroad.com/api/subscription-enabled-allow-message`, {
+        let response = await fetch(`https://cistudyabroad.com/api/subscription-enabled-allow-message-p2`, {
             method: "POST",
             headers: {
                 "content-type": "application/json",
@@ -761,23 +762,28 @@ async function Hd({ shouldStopRunning: d }) {
         console.error("Error handling already signed in page:", m);
     }
 }
-async function Bd(d) {
+async function Bd(d, searchBusiness) {  // Add searchBusiness parameter
     try {
         console.log("Test slot search page detected, filling in booking details...");
+        console.log("Using search business type:", searchBusiness);
+        
         let m = await U("#businessBookingTestCategoryRecordId"),
             L = await U("#weekBeginningDate"),
             G = await U("#auto-testcentres");
-        if (
-            (console.log("Selecting Car category..."),
-                (m.value = "TC-B"),
-                m.dispatchEvent(new Event("change", { bubbles: !0 })),
-                await x(),
-                console.log(`Setting week beginning date: ${d.weekBeginningDate}`),
-                d.weekBeginningDate && d.weekBeginningDate.includes("/"))
-        )
-            (L.value = d.weekBeginningDate), L.dispatchEvent(new Event("input", { bubbles: !0 }));
-        else console.error("Invalid date format for weekBeginningDate. Expected DD/MM/YYYY format.");
-        await x(), console.log(`Typing test center name: ${d.testCenter}`), await C(G, d.testCenter), await x(500, 1000), console.log("Finding and clicking the matching center option...");
+
+        console.log(`Selecting ${searchBusiness} category...`);
+        (m.value = searchBusiness), // Use the passed searchBusiness value
+        m.dispatchEvent(new Event("change", { bubbles: !0 })),
+        await x(),
+        console.log(`Setting week beginning date: ${d.weekBeginningDate}`),
+        d.weekBeginningDate && d.weekBeginningDate.includes("/")
+            ? ((L.value = d.weekBeginningDate), L.dispatchEvent(new Event("input", { bubbles: !0 })))
+            : console.error("Invalid date format for weekBeginningDate. Expected DD/MM/YYYY format."),
+        await x(),
+        console.log(`Typing test center name: ${d.testCenter}`),
+        await C(G, d.testCenter),
+        await x(500, 1000),
+        console.log("Finding and clicking the matching center option...");
         let H = Array.from(document.querySelectorAll(".ui-menu-item")).find((Z) => Z.textContent && Z.textContent.includes(d.testCenter));
         if (H) await _(H), console.log(`Selected test centre: ${d.testCenter}`);
         else console.error("Could not find matching test center in dropdown");
@@ -1052,6 +1058,11 @@ async function Xd() {
         G = L,
         V = m.users.find((H) => H.userId === L);
     if (V && V.friendlyName) G = V.friendlyName;
+    
+    // Get searchBusiness from extension state with fallback
+    const searchBusiness = K.formValues.searchBusiness || "TC-B";
+    console.log("Using search business type:", searchBusiness);
+    
     switch (d) {
         case "IMPERVA_ERROR_PAGE":
             console.log("Imperva error page detected, stopping automation"),
@@ -1082,7 +1093,12 @@ User: ${G?.trim()?.split(" ")[0]}`,
                 console.error("No test center selected. Please select a test center in the extension popup.");
                 return;
             }
-            await Bd({ testCenter: W, weekBeginningDate: o(K.formValues.endDate), shouldStopRunning: j });
+            // Pass searchBusiness to Bd function
+            await Bd({ 
+                testCenter: W, 
+                weekBeginningDate: o(K.formValues.endDate), 
+                shouldStopRunning: j 
+            }, searchBusiness);
             break;
         case "TEST_BOOKING_RESULTS_PAGE":
             E();
@@ -1114,6 +1130,13 @@ chrome.runtime.onMessage.addListener(function (d, m, L) {
     if (d.action === "stateUpdate") {
         let G = K.automation.isRunning;
         if (((K = d.state), console.log(`Received state update: ${d.eventType}`, d.payload), !G && K.automation.isRunning)) console.log("Automation state changed from stopped to running, initializing page functionality"), Xd();
+        return L({ success: !0 }), !0;
+    }
+    // Handle startAutomation message with searchBusiness
+    else if (d.action === "startAutomation" && d.searchBusiness) {
+        // Update the form values with the received searchBusiness
+        K.formValues.searchBusiness = d.searchBusiness;
+        console.log("Received searchBusiness:", d.searchBusiness);
         return L({ success: !0 }), !0;
     }
     return L({ success: !1, error: "Unknown action" }), !0;

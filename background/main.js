@@ -7,7 +7,7 @@ function B() {
     return q.setMonth(q.getMonth() + 3), q.toISOString().split("T")[0];
 }
 function Y() {
-    return { userId: null, userName: null, timeDelay: 500, startDate: W(), endDate: B(), enableRapidMode: !0, rapidModeDelay: 500, delayVariation: 10 };
+    return { userId: null, userName: null, timeDelay: 500, startDate: W(), endDate: B(), enableRapidMode: !0, rapidModeDelay: 500, delayVariation: 10,searchBusiness:"TC-B" };
 }
 function w() {
     return { automation: { isRunning: !1, startTime: null }, formValues: Y() };
@@ -199,3 +199,26 @@ chrome.webRequest.onCompleted.addListener(
     { urls: ["*://*.dvsa.gov.uk/_Incapsula_Resource*"], types: ["xmlhttprequest"] }
 );
     
+
+// Check login status when extension starts
+chrome.runtime.onStartup.addListener(() => {
+  checkLoginStatus();
+});
+
+// Check login status when extension is installed/updated
+chrome.runtime.onInstalled.addListener(() => {
+  checkLoginStatus();
+});
+
+// Function to check login status and set appropriate popup
+function checkLoginStatus() {
+  chrome.storage.local.get(['loggedInUser'], (result) => {
+    if (result.loggedInUser) {
+      // User is logged in, show dashboard
+      chrome.action.setPopup({ popup: "popup.html" });
+    } else {
+      // User is not logged in, show login page
+      chrome.action.setPopup({ popup: "login.html" });
+    }
+  });
+}
