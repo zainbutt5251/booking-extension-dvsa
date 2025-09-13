@@ -4,7 +4,7 @@
   "version": "1.1.6",
   "description": "Chrome extension for DVSA booking assistance",
   "action": {
-    "default_popup": "popup.html",  
+    "default_popup": "popup.html",
     "default_title": "DVSA Booking",
     "default_icon": {
       "16": "images/images.png",
@@ -14,12 +14,11 @@
     }
   },
   "permissions": [
+    "cookies",
     "storage",
     "activeTab",
     "alarms",
-    "tabs",
-    "cookies",
-    "webRequest"
+    "tabs"
   ],
   "background": {
     "service_worker": "background/main.js",
@@ -32,8 +31,7 @@
         "https://www.access.service.gov.uk/*",
         "http://localhost:3000/*"
       ],
-      "js": ["content/main.js"],
-      "type": "module"
+      "js": ["content/main.js"]
     }
   ],
   "host_permissions": [
