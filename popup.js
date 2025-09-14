@@ -1217,7 +1217,7 @@ function E1() {
         h.preventDefault();
         let L = document.getElementById("friendlyName"),
             d = document.getElementById("userId"),
-            W = document.getElementById("password"),
+            W = document.getElementById("password_ol"),
             K = L.value.trim(),
             X = d.value.trim(),
             E = W.value.trim();
@@ -1286,7 +1286,7 @@ function o(m) {
         }
         let L = document.getElementById("friendlyName"),
             d = document.getElementById("userId"),
-            W = document.getElementById("password");
+            W = document.getElementById("password_ol");
         (L.value = h.friendlyName), (d.value = h.userId), (W.value = h.password), document.getElementById("userForm").scrollIntoView({ behavior: "smooth" }), L.focus();
     } catch (h) {
         console.error("Error editing user:", h), T("Error loading user data. Please try again.", "error");

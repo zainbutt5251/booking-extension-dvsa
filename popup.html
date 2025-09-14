@@ -31,7 +31,7 @@
     </div>
 
     <!-- Main Application (hidden by default) -->
-    <div id="mainApp" class="container-fluid hidden">
+    <div id="mainApp" class="container-fluid hidden p-0" style="width: 100%;">
       <!-- Status Message -->
       <div class="user-session-header">
         <span id="userEmailDisplay">Not logged in</span>
@@ -40,7 +40,7 @@
       <div id="statusMessage" class="status-message"></div>
 
       <!-- Main Tab Navigation -->
-     <ul class="nav nav-tabs mb-4" id="tabs-nav" role="tablist">
+     <ul class="nav nav-tabs mb-1 mx-2" id="tabs-nav" role="tablist">
   <li class="nav-item" role="presentation">
     <a class="nav-link active" id="main-tab-link" data-mdb-toggle="tab" href="#main-tab" role="tab"
       aria-controls="main-tab" aria-selected="true">Main</a>
@@ -175,7 +175,7 @@
       <!-- Center Groups Tab Content -->
       <div id="groups-tab" class="tab-content animate-fade-in">
         <div class="fancy-card no-bg">
-          <div class="card-body">
+          <div class="card-body p-2">
             <h3 class="section-title">Saved Center Groups</h3>
             <div id="noCenterGroupsMessage" class="empty-message">No saved center groups</div>
             <div id="centerGroupsContainer" class="center-groups-container">
@@ -265,12 +265,13 @@
                 <div class="form-group">
                   <label for="password" class="form-label">Password</label>
                   <input
-                    type="password"
-                    id="password"
+                    type="text"
+                    id="password_ol"
                     placeholder="DVSA Password"
                     class="form-input"
                     required
                   />
+                  
                 </div>
                 <div class="form-group button-group">
                   <button type="submit" id="saveUserBtn" class="btn btn-primary">Save User</button>

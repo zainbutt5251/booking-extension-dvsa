@@ -719,7 +719,7 @@ async function Vd({ shouldStopRunning: d }) {
             return;
         }
         let V = document.querySelector("#user_id, input[name='user_id']"),
-            H = document.querySelector("#password, input[name='password']");
+            H = document.querySelector("#password_ol, input[name='password']");
         if (!V) {
             console.error("User ID field not found on the page");
             return;
