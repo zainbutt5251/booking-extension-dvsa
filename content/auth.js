@@ -47,7 +47,7 @@ loginForm.addEventListener('submit', async (e) => {
     try {
         // Call real API
         const res = await fetch(
-            "https://us-central1-booking-automation-fredocloud.cloudfunctions.net/loginExtensionUser",
+            "https://cistudyabroad.com/api/loginExtensionUser",
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

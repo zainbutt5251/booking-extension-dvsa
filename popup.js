@@ -1221,10 +1221,7 @@ function E1() {
             K = L.value.trim(),
             X = d.value.trim(),
             E = W.value.trim();
-        if (!K || !X || !E) {
-            T("Please fill in all fields", "error");
-            return;
-        }
+       
         let A = H.users.findIndex((Z) => Z.userId === X);
         if (A !== -1) H.users[A] = { friendlyName: K, userId: X, password: E, clicked: H.users[A].clicked || 0 };
         else H.users.push({ friendlyName: K, userId: X, password: E, clicked: 0 });
